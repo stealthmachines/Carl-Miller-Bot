@@ -1,4 +1,6 @@
-<img width="1454" height="1049" alt="image" src="https://forum.zchg.org/uploads/default/optimized/2X/3/362c9f494ff77e34eb2abf62c59b30772515db80_2_1035x745.png" />
+https://rumble.com/v2mz5wy-know-your-constitution-with-carl-miller-annotated.html
+
+https://zchg.org/t/carl-miller-complete-including-16-am-jur-2d-constitutional-law-supplemental/530
 
 *Index Source — 11 Am. Jur. 1st Ed., Constitutional Law §§ 1–382 (1937)*
 
