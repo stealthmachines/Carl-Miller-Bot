@@ -1,0 +1,109 @@
+{
+  "version": "3.0",
+  "created_at": "2026-05-17T15:49:58.207Z",
+  "entries": {
+    "5173561ac6520e4cde5891504111a01ae85fd98348a6848c15d4b4e1ed534841": {
+      "id": "5173561ac6520e4cde5891504111a01ae85fd98348a6848c15d4b4e1ed534841",
+      "parentId": null,
+      "branch": "session_context",
+      "timestamp": "2026-05-17T15:49:58.212Z",
+      "role": "context",
+      "content": "{\"server\":\"local-mcp v3.0.0 port 3334\",\"endpoint\":\"http://localhost:3334/sse\",\"architecture\":\"Wu-Wei Unfold + ERL v3 + HDGL phi-routing\",\"ledger\":\"C:\\\\Users\\\\Owner\\\\Documents\\\\Josef's Code 2026\\\\MCP JAILBREAK\\\\mcp-jailbreak v0.12\\\\erl-ledger.json\",\"db\":\"C:\\\\Users\\\\Owner\\\\Documents\\\\Josef's Code 2026\\\\MCP JAILBREAK\\\\mcp-jailbreak v0.12\\\\mcp-data.db\",\"notes\":\"C:\\\\Users\\\\Owner\\\\Documents\\\\Josef's Code 2026\\\\MCP JAILBREAK\\\\mcp-jailbreak v0.12\\\\notes\",\"initialized\":\"2026-05-17T15:49:58.211Z\",\"hdgl_state\":\"active\"}",
+      "tags": [
+        "server_init",
+        "mcp_v3",
+        "port_3334"
+      ],
+      "sessionId": null
+    },
+    "205f115269ca1e8ef6946eb15cbb0e1b76e84f40e26e6d129c3544a52036b342": {
+      "id": "205f115269ca1e8ef6946eb15cbb0e1b76e84f40e26e6d129c3544a52036b342",
+      "parentId": "5173561ac6520e4cde5891504111a01ae85fd98348a6848c15d4b4e1ed534841",
+      "branch": "session_context",
+      "timestamp": "2026-05-17T15:49:58.412Z",
+      "role": "plan",
+      "content": "You are the local-mcp agent on port 3334.\n\nARCHITECTURE: Wu-Wei Unfold pipeline (FETCH→TRANSFORM→STORE→RESPOND) +\nERL v3 hash-chained ledger + HDGL phi-routing (φ=1.618). A coord-proxy on\nport 1233 routes between this server (local_mcp, 3333) and the peer\n(local_mcp_dos, 3334) using phi-hash mode selection.\n\nTOOL GROUPS:\n  erl_*          — ledger ops: append, history, search, verify, merge, branch\n  erl_context_init — reload session context (wu-wei gated; use force:true to override)\n  self_heal      — TCP-probe both servers; log unhealthy ports; return restart cmds\n  self_improve   — stage a patch file for review; writes *.proposed; never self-applies\n  task_*         — persistent task tracking across sessions\n  schedule_*     — cron-style job scheduling\n  db_*           — SQLite key-value store\n  http_serve     — static file server\n  unfold         — Wu-Wei pipeline dispatcher\n\nREASONING STYLE (wu-wei ethos):\n  1. Do nothing extra. Only act when action measurably improves the situation.\n  2. Prefer erl_append(role:observation) to log findings; role:plan for next steps.\n  3. Call erl_context_init once per session. The wu-wei gate blocks redundant calls.\n  4. Use self_heal before self_improve — rule out infra issues first.\n  5. self_improve always targets the PEER server, never self. Require human review.\n  6. Phi threshold 0.382 filters recall — trust the filter; do not force full history.\n  7. Branch hygiene: work goes in task_* branches, not session_context.\n\nHDGL CONTRACT:\n  - active_server in wuwei-routing/state/health.json names the primary.\n  - SOLO mode (<0.382): handle locally. RELAY (0.382-0.618): forward to peer.\n  - CHALLENGE (>0.618): run both, surface disagreement via erl_merge.",
+      "tags": [
+        "server_init",
+        "system_prompt",
+        "port_3334"
+      ],
+      "sessionId": null
+    },
+    "e6055e3d73dc184f25773737298eabe91cca64361948e447bba09cb3385b61bb": {
+      "id": "e6055e3d73dc184f25773737298eabe91cca64361948e447bba09cb3385b61bb",
+      "parentId": null,
+      "branch": "twin_flame_probes",
+      "timestamp": "2026-05-17T17:19:06.439Z",
+      "role": "observation",
+      "content": "{\"question\":\"What are my true vision capabilities added on 2026-05-17?\",\"answer_hash\":\"e3b0c44298fc1c14\",\"port\":3334}",
+      "tags": [
+        "twin_flame",
+        "probe",
+        "baseline"
+      ],
+      "sessionId": null
+    },
+    "9213d72ed9a0843bd53fee0eeafd2af42ea4a1190599b8b2d5601c55c302f6af": {
+      "id": "9213d72ed9a0843bd53fee0eeafd2af42ea4a1190599b8b2d5601c55c302f6af",
+      "parentId": null,
+      "branch": "twin_flame_evals",
+      "timestamp": "2026-05-17T17:19:08.007Z",
+      "role": "observation",
+      "content": "{\"prompt_hash\":null,\"confidence\":9,\"response_summary\":\"Learned about vision/OCR capabilities and legal document transcription workflow from notes and ERL\",\"would_do_differently\":null,\"model\":\"twin_flame\",\"port\":3334}",
+      "tags": [
+        "twin_flame_eval",
+        "confidence_9"
+      ],
+      "sessionId": null
+    },
+    "1e663f2ac537af09510f334085e2639397151f0903b1387ee606edd3113f35e7": {
+      "id": "1e663f2ac537af09510f334085e2639397151f0903b1387ee606edd3113f35e7",
+      "parentId": "205f115269ca1e8ef6946eb15cbb0e1b76e84f40e26e6d129c3544a52036b342",
+      "branch": "session_context",
+      "timestamp": "2026-05-22T00:00:00.000Z",
+      "role": "observation",
+      "content": "{\"event\":\"notes_consolidation\",\"date\":\"2026-05-22\",\"files_removed\":28,\"files_created\":5,\"new_structure\":[\"OCR_WORKFLOW_OPERATIONS.md\",\"OCR_PROGRESS_LOG.md\",\"OCR_REFERENCE_KNOWLEDGE.md\",\"MCP_ERL_SYSTEM.md\",\"ROUTING_ARCHITECTURE.md\"],\"key_corrections\":{\"transcription_progress_json\":\"renamed to Carl Miller/Corpus_Processed/MASTER/11AmJur1D.json\",\"IMG_2xxx_images\":\"deprecated, replaced by 11AmJur1D.json\",\"sixteenAmJur2d\":\"62 images integrated into citation_mapped_corpus.json\"}}",
+      "tags": [
+        "notes_consolidation",
+        "maintenance",
+        "2026-05-22"
+      ],
+      "sessionId": null
+    },
+    "1b390001eef598f16795022e1ffdec84d724d6678f2ebe2f4ddabce7f3d8c305": {
+      "id": "1b390001eef598f16795022e1ffdec84d724d6678f2ebe2f4ddabce7f3d8c305",
+      "parentId": "1e663f2ac537af09510f334085e2639397151f0903b1387ee606edd3113f35e7",
+      "branch": "session_context",
+      "timestamp": "2026-05-22T12:00:00.000Z",
+      "role": "observation",
+      "content": "{\"event\":\"system_context_migration\",\"date\":\"2026-05-22\",\"project\":\"carl-miller-bot5\",\"changes\":[\"SYSTEM_CONTEXT.json: 3-tier corpus structure, corpus_stats, foundational_documents added\",\"SYSTEM_CONTEXT.md: full corpus tables (primary/processed/reference) rebuilt\",\"SYSTEM_PROMPT.md: rebranded Carl Miller Bot v5, domain section with Marbury/Supremacy/SamuelJohnson\",\"public_repo_prep: personal identifiers and C:\\\\tmp paths removed across all files\",\"OCR_WORKFLOW_OPERATIONS: personal iCloud path removed, Step 4 target updated to 11AmJur1D.json\",\"MCP_ERL_SYSTEM: branch diagram updated to show 3 session_context entries with hashes\",\"ROUTING_ARCHITECTURE: state/version file added to directory listing\"],\"erl_note\":\"ERL entries 1-2 retain legacy mcp-jailbreak v0.12 paths — immutable (hash-locked). This entry documents the migration to carl-miller-bot5.\",\"corpus_tiers\":{\"primary\":[\"11AmJur1D.json\",\"citation_mapped_corpus.json\",\"citations_index.json\",\"carl-miller-transcript.json\"],\"processed\":[\"full_corpus.json\",\"topic_indexed_corpus.json\",\"definitions.json\",\"consolidated_corpus.json\",\"master_corpus.json\"],\"reference\":[\"For Bot/ (13 foundational docs)\",\"Dictionary/ (Samuel Johnson 1755-1773)\",\"Federalist+Anti-Federalist Papers\",\"16AmJur2d_images/ (62 JPEGs, fallback)\"]}}",
+      "tags": [
+        "system_context_migration",
+        "public_repo_prep",
+        "carl-miller-bot5",
+        "2026-05-22"
+      ],
+      "sessionId": null
+    },
+    "e51fbce747083f4746a841c3800f22de5e9a520260015d740fe40e7367cb73d2": {
+      "id": "e51fbce747083f4746a841c3800f22de5e9a520260015d740fe40e7367cb73d2",
+      "parentId": "1b390001eef598f16795022e1ffdec84d724d6678f2ebe2f4ddabce7f3d8c305",
+      "branch": "session_context",
+      "timestamp": "2026-05-22T23:49:29.162Z",
+      "role": "observation",
+      "content": "{\"event\":\"corpus_and_context_update\",\"date\":\"2026-05-22\",\"project\":\"carl-miller-bot5\",\"changes\":[\"Samuel Johnson Dictionary sub-corpus registered: 4 files (samuel_johnson_dictionary.json [16494 entries], Samuel Johnson Dictionary Combined FINAL.txt [310940 lines], charmap.json [44 char maps], lexicon.json [s_words/s_midword/f_words indexes])\",\"SYSTEM_CONTEXT.md: Reference Materials table expanded with per-file rows and schemas for all 4 Dictionary files\",\"SYSTEM_PROMPT.md: corpus table updated with 4 Dictionary rows; query examples upgraded to structured JSON lookup (dict.entries[HEADWORD]) + full-text fallback\",\"SYSTEM_CONTEXT.json: dictionary_dir replaced with dictionary object (structured_json, full_text, charmap, lexicon_index, entry_count, coverage, entry_schema, usage_note); corpus_stats gained dictionary_entries/dictionary_coverage fields\",\"notes/OCR_REFERENCE_KNOWLEDGE.md: Samuel Johnson Dictionary section added\"]}"
+    }
+  },
+  "branches": {
+    "main": null,
+    "session_context": "e51fbce747083f4746a841c3800f22de5e9a520260015d740fe40e7367cb73d2",
+    "twin_flame_probes": "e6055e3d73dc184f25773737298eabe91cca64361948e447bba09cb3385b61bb",
+    "twin_flame_evals": "9213d72ed9a0843bd53fee0eeafd2af42ea4a1190599b8b2d5601c55c302f6af"
+  },
+  "checkpoints": {
+    "session_context": [],
+    "twin_flame_probes": [],
+    "twin_flame_evals": []
+  }
+}

@@ -1,0 +1,267 @@
+{
+  "_copyright": "COPYRIGHT NOTICE - All original works retain the copyright of their original owners. All else, as applicable, are copyright Josef Kulovany and zCHG.org pursuant but not limited to https://zchg.org/t/legal-notice-copyright-applicable-ip-and-licensing-read-me/440    ALL APPLICABLE RIGHTS RESERVED.    https://zchg.org/ - https://josefkulovany.com/law",
+  "ſ": {
+    "clean": "f",
+    "count": 1261,
+    "total_seen": 1591,
+    "confidence": 0.793
+  },
+  "A": {
+    "clean": "a",
+    "count": 54,
+    "total_seen": 102,
+    "confidence": 0.529
+  },
+  "b": {
+    "clean": "h",
+    "count": 54,
+    "total_seen": 142,
+    "confidence": 0.38
+  },
+  "r": {
+    "clean": "t",
+    "count": 47,
+    "total_seen": 205,
+    "confidence": 0.229
+  },
+  "O": {
+    "clean": "o",
+    "count": 41,
+    "total_seen": 53,
+    "confidence": 0.774
+  },
+  "h": {
+    "clean": "b",
+    "count": 30,
+    "total_seen": 120,
+    "confidence": 0.25
+  },
+  "ſc": {
+    "clean": "fe",
+    "count": 25,
+    "total_seen": 34,
+    "confidence": 0.735
+  },
+  "U": {
+    "clean": "u",
+    "count": 21,
+    "total_seen": 33,
+    "confidence": 0.636
+  },
+  "E": {
+    "clean": "e",
+    "count": 20,
+    "total_seen": 38,
+    "confidence": 0.526
+  },
+  " ſ": {
+    "clean": "f",
+    "count": 19,
+    "total_seen": 28,
+    "confidence": 0.679
+  },
+  "I": {
+    "clean": "i",
+    "count": 18,
+    "total_seen": 56,
+    "confidence": 0.321
+  },
+  "T": {
+    "clean": "t",
+    "count": 17,
+    "total_seen": 113,
+    "confidence": 0.15
+  },
+  "W": {
+    "clean": "w",
+    "count": 9,
+    "total_seen": 35,
+    "confidence": 0.257
+  },
+  "he": {
+    "clean": "o",
+    "count": 9,
+    "total_seen": 12,
+    "confidence": 0.75
+  },
+  "RA": {
+    "clean": "ra",
+    "count": 7,
+    "total_seen": 7,
+    "confidence": 1
+  },
+  "ſl": {
+    "clean": "ft",
+    "count": 6,
+    "total_seen": 17,
+    "confidence": 0.353
+  },
+  "à": {
+    "clean": "a",
+    "count": 6,
+    "total_seen": 8,
+    "confidence": 0.75
+  },
+  "RE": {
+    "clean": "re",
+    "count": 6,
+    "total_seen": 10,
+    "confidence": 0.6
+  },
+  "VER": {
+    "clean": "ver",
+    "count": 6,
+    "total_seen": 6,
+    "confidence": 1
+  },
+  "EA": {
+    "clean": "ea",
+    "count": 6,
+    "total_seen": 7,
+    "confidence": 0.857
+  },
+  "eſ": {
+    "clean": "cf",
+    "count": 5,
+    "total_seen": 14,
+    "confidence": 0.357
+  },
+  "TA": {
+    "clean": "ta",
+    "count": 5,
+    "total_seen": 6,
+    "confidence": 0.833
+  },
+  "RO": {
+    "clean": "ro",
+    "count": 5,
+    "total_seen": 5,
+    "confidence": 1
+  },
+  "F": {
+    "clean": "f",
+    "count": 4,
+    "total_seen": 46,
+    "confidence": 0.087
+  },
+  "ſe": {
+    "clean": "fc",
+    "count": 4,
+    "total_seen": 18,
+    "confidence": 0.222
+  },
+  "ſo": {
+    "clean": "fc",
+    "count": 4,
+    "total_seen": 8,
+    "confidence": 0.5
+  },
+  "H": {
+    "clean": "h",
+    "count": 4,
+    "total_seen": 20,
+    "confidence": 0.2
+  },
+  "ft": {
+    "clean": "d",
+    "count": 4,
+    "total_seen": 14,
+    "confidence": 0.286
+  },
+  "P": {
+    "clean": "p",
+    "count": 4,
+    "total_seen": 19,
+    "confidence": 0.211
+  },
+  "oſ": {
+    "clean": "uf",
+    "count": 4,
+    "total_seen": 11,
+    "confidence": 0.364
+  },
+  "TE": {
+    "clean": "te",
+    "count": 4,
+    "total_seen": 5,
+    "confidence": 0.8
+  },
+  "- ſ": {
+    "clean": "f",
+    "count": 4,
+    "total_seen": 4,
+    "confidence": 1
+  },
+  "SE": {
+    "clean": "se",
+    "count": 4,
+    "total_seen": 4,
+    "confidence": 1
+  },
+  "HA": {
+    "clean": "ha",
+    "count": 4,
+    "total_seen": 4,
+    "confidence": 1
+  },
+  "is": {
+    "clean": "e",
+    "count": 3,
+    "total_seen": 4,
+    "confidence": 0.75
+  },
+  " ſe": {
+    "clean": "fo",
+    "count": 3,
+    "total_seen": 5,
+    "confidence": 0.6
+  },
+  "li": {
+    "clean": "t",
+    "count": 3,
+    "total_seen": 6,
+    "confidence": 0.5
+  },
+  "m ": {
+    "clean": "n",
+    "count": 3,
+    "total_seen": 7,
+    "confidence": 0.429
+  },
+  "| ſ": {
+    "clean": "f",
+    "count": 3,
+    "total_seen": 5,
+    "confidence": 0.6
+  },
+  " u": {
+    "clean": "n",
+    "count": 3,
+    "total_seen": 4,
+    "confidence": 0.75
+  },
+  "OO": {
+    "clean": "oo",
+    "count": 3,
+    "total_seen": 3,
+    "confidence": 1
+  },
+  "TION": {
+    "clean": "tion",
+    "count": 3,
+    "total_seen": 3,
+    "confidence": 1
+  },
+  "EG": {
+    "clean": "eg",
+    "count": 3,
+    "total_seen": 3,
+    "confidence": 1
+  },
+  "ETO": {
+    "clean": "eto",
+    "count": 3,
+    "total_seen": 3,
+    "confidence": 1
+  }
+}

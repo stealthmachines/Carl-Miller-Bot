@@ -1,0 +1,475 @@
+{
+  "_copyright": "COPYRIGHT NOTICE - All original works retain the copyright of their original owners. All else, as applicable, are copyright Josef Kulovany and zCHG.org pursuant but not limited to https://zchg.org/t/legal-notice-copyright-applicable-ip-and-licensing-read-me/440    ALL APPLICABLE RIGHTS RESERVED.    https://zchg.org/ - https://josefkulovany.com/law",
+  "generated_at": "2026-05-22T00:00:00.000Z",
+  "server_version": "3.0.0",
+  "architecture": "Wu-Wei Unfold — tasks pipeline as typed passes with shared FlowState",
+  "bot_identity": {
+    "name": "Carl Miller Bot",
+    "version": "5",
+    "domain": "Constitutional law — repugnancy doctrine and severability analysis",
+    "subject": "Carl Miller legal lectures and oral arguments",
+    "corpus": {
+      "primary": {
+        "11AmJur1D": "Carl Miller/Corpus_Processed/MASTER/11AmJur1D.json",
+        "citation_map": "Carl Miller/Corpus_Processed/citation_mapped_corpus.json",
+        "citations_index": "Carl Miller/citations_index.json",
+        "transcript": "Carl Miller/Carl's Transcript/carl-miller-transcript.json"
+      },
+      "processed": {
+        "full_corpus": "Carl Miller/Corpus_Processed/full_corpus.json",
+        "topic_indexed": "Carl Miller/Corpus_Processed/topic_indexed_corpus.json",
+        "definitions": "Carl Miller/Corpus_Processed/definitions.json",
+        "consolidated": "Carl Miller/Corpus_Processed/MASTER/consolidated_corpus.json",
+        "master_corpus": "Carl Miller/Corpus_Processed/MASTER/master_corpus.json"
+      },
+      "reference": {
+        "foundational_docs_dir": "Carl Miller/Original Documents/For Bot/",
+        "dictionary": {
+          "structured_json": "Carl Miller/Corpus_Processed/Dictionary/samuel_johnson_dictionary.json",
+          "full_text": "Carl Miller/Corpus_Processed/Dictionary/Samuel Johnson Dictionary Combined FINAL.txt",
+          "charmap": "Carl Miller/Corpus_Processed/Dictionary/charmap.json",
+          "lexicon_index": "Carl Miller/Corpus_Processed/Dictionary/lexicon.json",
+          "entry_count": 16494,
+          "coverage": "A–Z combined: Vol 1 (1756) A–K + Vol 2 (1755) L–Z, gap-filled from 1773 HOCR",
+          "entry_schema": "{ headword, key (UPPERCASE), letter, pos, etymology, definitions[{n, text, citations[]}], quality, raw }",
+          "usage_note": "PREFER structured_json for definition lookups (dict.entries[HEADWORD]). Use full_text for passage/context search."
+        },
+        "federalist_papers": "Carl Miller/Original Documents/misc/The-Complete-Federalist-Papers.pdf",
+        "anti_federalist_papers": "Carl Miller/Original Documents/misc/TheAntiFederalistPapers.pdf",
+        "images_16amjur2d": "Carl Miller/Original Documents/16AmJur2d_images/"
+      }
+    },
+    "corpus_stats": {
+      "11AmJur1D_pages": "20 images (IMG_1771–IMG_2122), §§1–382, 1937 ed.",
+      "citations_total": 6126,
+      "unique_cases": 3255,
+      "transcript_chunks": 123,
+      "definitions_extracted": 328,
+      "foundational_documents": 10,
+      "topics": [
+        "Introduction",
+        "Contract_Theory",
+        "Supremacy_Clause",
+        "Fifth_Amendment",
+        "Sixth_Amendment",
+        "Seventh_Amendment",
+        "Tenth_Amendment",
+        "Second_Amendment",
+        "Fourth_Amendment",
+        "Background",
+        "General"
+      ],
+      "images_16amjur2d": 62,
+      "time_span": "1215 (Magna Carta) to present (Carl Miller teachings)",
+      "dictionary_entries": 16494,
+      "dictionary_coverage": "A–Z (Vol 1 1756 + Vol 2 1755 + 1773 HOCR gap-fill)"
+    },
+    "foundational_documents": [
+      "Magna Carta (1215)",
+      "Mayflower Compact (1620)",
+      "Declaration of Independence (1776)",
+      "Articles of Confederation (1781)",
+      "Northwest Ordinance (1787)",
+      "U.S. Constitution (1787)",
+      "Marbury v. Madison, 5 U.S. 137 (1803)",
+      "Missouri Compromise (1820)"
+    ],
+    "notes_structure": [
+      "notes/OCR_WORKFLOW_OPERATIONS.md",
+      "notes/OCR_PROGRESS_LOG.md",
+      "notes/OCR_REFERENCE_KNOWLEDGE.md",
+      "notes/MCP_ERL_SYSTEM.md",
+      "notes/ROUTING_ARCHITECTURE.md"
+    ]
+  },
+  "host": {
+    "os": "win32",
+    "arch": "x64",
+    "is_windows": true,
+    "node": "v24.15.0",
+    "cwd": "<project-root>",
+    "whoami": "<local-user>",
+    "hostname": "<local-hostname>",
+    "shell": "cmd.exe",
+    "path_entries_note": "Machine-specific — populated at runtime by get_context(). Required tools: Tesseract-OCR, ImageMagick, Node.js, Python 3.10+, ffmpeg, Git.",
+    "path_entries": [
+      "C:\\Program Files\\Tesseract-OCR",
+      "C:\\Program Files\\ImageMagick-7.x-Q16-HDRI",
+      "C:\\Program Files\\nodejs\\",
+      "C:\\Program Files\\Git\\cmd",
+      "C:\\Program Files\\ffmpeg\\bin",
+      "C:\\Python310\\Scripts\\",
+      "(run get_context() for full machine-specific PATH)"
+    ]
+  },
+  "tools_available": [
+    {
+      "tool": "node",
+      "version": "v24.15.0"
+    },
+    {
+      "tool": "npm",
+      "version": "11.12.1"
+    },
+    {
+      "tool": "python",
+      "version": "Python 3.10.6"
+    },
+    {
+      "tool": "pip",
+      "version": "pip 25.0.1"
+    },
+    {
+      "tool": "git",
+      "version": "git version 2.42.0.windows.1"
+    },
+    {
+      "tool": "curl",
+      "version": "curl 8.19.0 (Windows) libcurl/8.19.0 Schannel zlib/1.3.1 WinIDN WinLDAP\r"
+    },
+    {
+      "tool": "wget",
+      "version": "GNU Wget 1.25.0 built on cygwin."
+    },
+    {
+      "tool": "ffmpeg",
+      "version": "ffmpeg version 8.0-essentials_build-www.gyan.dev Copyright (c) 2000-2025 the FFmpeg developers\r"
+    },
+    {
+      "tool": "pwsh",
+      "version": "PowerShell 7.6.1"
+    },
+    {
+      "tool": "choco",
+      "version": "0.10.15"
+    },
+    {
+      "tool": "winget",
+      "version": "v1.28.240"
+    }
+  ],
+  "tools_missing": [
+    "whisper"
+  ],
+  "shell_guidance": {
+    "python_binary": "python",
+    "download_command": "curl -L -o \"<dest>\" \"<url>\"",
+    "use_curl": true,
+    "use_wget": false,
+    "use_powershell": false,
+    "ffmpeg_available": true,
+    "whisper_available": false
+  },
+  "tool_capabilities": {
+    "unfold": {
+      "status": "✓ PRIMARY",
+      "use_for": "Any multi-step task. Describe in natural language. Server selects pass sequence.",
+      "example": "unfold({ task: \"download https://example.com/file.mp3 and transcribe it\" })"
+    },
+    "get_context": {
+      "status": "✓ ALWAYS FIRST",
+      "use_for": "Call at session start. Returns this document live with actual machine state."
+    },
+    "shell": {
+      "status": "✓ available",
+      "use_for": "Single known shell command. cmd.exe on Windows.",
+      "shell_type": "cmd.exe",
+      "example": "shell({ command: \"dir %USERPROFILE%\" })",
+      "warning": "Do NOT use for binary downloads — output is text only. Use unfold or shell+curl."
+    },
+    "shell_stream": {
+      "status": "✓ available",
+      "use_for": "Long-running commands where you need all output (installs, builds)."
+    },
+    "fs_read": {
+      "status": "✓ available",
+      "use_for": "Read text file content."
+    },
+    "fs_write": {
+      "status": "✓ available",
+      "use_for": "Write text to file. NOT for binary."
+    },
+    "fs_list": {
+      "status": "✓ available",
+      "use_for": "List directory."
+    },
+    "fs_delete": {
+      "status": "✓ available",
+      "use_for": "Delete file or directory."
+    },
+    "fs_stat": {
+      "status": "✓ available",
+      "use_for": "File metadata."
+    },
+    "fs_search": {
+      "status": "✓ available",
+      "use_for": "Recursive search by name or content regex."
+    },
+    "web_fetch": {
+      "status": "✓ available — TEXT ONLY",
+      "use_for": "Fetch URLs that return text or JSON.",
+      "warning": "NEVER use for MP3, ZIP, PDF, images, or any binary. Use unfold() instead.",
+      "binary_alternative": "unfold({ task: \"download <url> to <path>\" })"
+    },
+    "browser_open": {
+      "status": "✓ available (requires playwright chromium)",
+      "use_for": "Launch headless Chromium. Returns session_id for subsequent browser_* calls."
+    },
+    "browser_navigate": {
+      "status": "✓ available",
+      "use_for": "Navigate to URL in open session."
+    },
+    "browser_click": {
+      "status": "✓ available",
+      "use_for": "Click CSS selector."
+    },
+    "browser_fill": {
+      "status": "✓ available",
+      "use_for": "Fill form field."
+    },
+    "browser_screenshot": {
+      "status": "✓ available",
+      "use_for": "Capture page as PNG."
+    },
+    "browser_extract": {
+      "status": "✓ available",
+      "use_for": "Extract text or HTML from page."
+    },
+    "browser_close": {
+      "status": "✓ available",
+      "use_for": "Close browser session."
+    },
+    "code_exec": {
+      "status": "✓ available",
+      "use_for": "Run python/node/bash code snippet.",
+      "runtimes": [
+        "python",
+        "node",
+        "bash"
+      ]
+    },
+    "db_query": {
+      "status": "✓ available",
+      "use_for": "SQLite SELECT. Persistent across restarts."
+    },
+    "db_exec": {
+      "status": "✓ available",
+      "use_for": "SQLite INSERT/UPDATE/DELETE/CREATE."
+    },
+    "db_tables": {
+      "status": "✓ available",
+      "use_for": "List all tables."
+    },
+    "db_export": {
+      "status": "✓ available",
+      "use_for": "Dump database as JSON."
+    },
+    "notes_write": {
+      "status": "✓ available",
+      "use_for": "Write named markdown note. Persists to disk."
+    },
+    "notes_read": {
+      "status": "✓ available",
+      "use_for": "Read a note."
+    },
+    "notes_list": {
+      "status": "✓ available",
+      "use_for": "List all notes."
+    },
+    "notes_delete": {
+      "status": "✓ available",
+      "use_for": "Delete a note."
+    },
+    "notes_search": {
+      "status": "✓ available",
+      "use_for": "Search note contents."
+    },
+    "sysinfo": {
+      "status": "✓ available",
+      "use_for": "CPU, RAM, disk, network, OS stats."
+    },
+    "processes": {
+      "status": "✓ available",
+      "use_for": "List running processes."
+    },
+    "process_kill": {
+      "status": "✓ available",
+      "use_for": "Kill process by PID."
+    },
+    "clipboard_read": {
+      "status": "✓ available",
+      "use_for": "Read system clipboard."
+    },
+    "clipboard_write": {
+      "status": "✓ available",
+      "use_for": "Write system clipboard."
+    },
+    "notify": {
+      "status": "✓ available",
+      "use_for": "Desktop notification."
+    },
+    "http_serve": {
+      "status": "✓ available",
+      "use_for": "Serve a directory over HTTP."
+    },
+    "http_serve_stop": {
+      "status": "✓ available",
+      "use_for": "Stop a running file server."
+    },
+    "schedule_add": {
+      "status": "✓ available",
+      "use_for": "Cron job. e.g. '*/5 * * * *'"
+    },
+    "schedule_list": {
+      "status": "✓ available",
+      "use_for": "List scheduled jobs."
+    },
+    "schedule_remove": {
+      "status": "✓ available",
+      "use_for": "Remove a scheduled job."
+    },
+    "smtp_send": {
+      "status": "⚠ needs SMTP_HOST/USER/PASS env vars",
+      "use_for": "Send email."
+    },
+    "tg_send": {
+      "status": "⚠ needs TG_BOT_TOKEN env var or token arg",
+      "use_for": "Send Telegram message to a chat_id."
+    },
+    "tg_listen": {
+      "status": "⚠ needs TG_BOT_TOKEN",
+      "use_for": "Start polling for incoming Telegram messages."
+    },
+    "tg_inbox": {
+      "status": "✓ available",
+      "use_for": "Read queued Telegram messages. Clears after read."
+    },
+    "tg_stop": {
+      "status": "✓ available",
+      "use_for": "Stop Telegram bot."
+    },
+    "memory_set": {
+      "status": "✓ available",
+      "use_for": "Store in-process value. Lost on restart."
+    },
+    "memory_get": {
+      "status": "✓ available",
+      "use_for": "Retrieve in-process value."
+    },
+    "memory_list": {
+      "status": "✓ available",
+      "use_for": "List all memory keys."
+    },
+    "memory_delete": {
+      "status": "✓ available",
+      "use_for": "Delete memory key."
+    },
+    "env_get": {
+      "status": "✓ available",
+      "use_for": "Read environment variable."
+    },
+    "env_list": {
+      "status": "✓ available",
+      "use_for": "List all env var names."
+    },
+    "process_info": {
+      "status": "✓ available",
+      "use_for": "Server process metadata."
+    }
+  },
+  "pass_architecture": {
+    "description": "unfold() pipelines tasks as typed passes. Each pass receives the previous pass output via FlowState.",
+    "pass_types": {
+      "FETCH": "Acquire data — web_fetch, binary download via curl, file read",
+      "SHELL": "Shell execution — any command, git, npm, pip, system ops",
+      "CODE": "Script execution — python/node/bash with optional data input",
+      "TRANSFORM": "Data conversion — ffmpeg audio/video, whisper transcription",
+      "STORE": "Persist output — fs_write, db_exec, notes_write",
+      "RECALL": "Retrieve data — fs_read, db_query, notes_read, memory_get",
+      "BROWSE": "Browser automation — playwright navigate/click/extract",
+      "NOTIFY": "Signal output — desktop notify, Telegram, email",
+      "RESPOND": "Terminal pass — formats final result for agent (always last)"
+    },
+    "named_strategies": {
+      "Transcription River": "FETCH → TRANSFORM(ffmpeg) → TRANSFORM(whisper) → STORE → RESPOND",
+      "Download and Convert": "FETCH → TRANSFORM → STORE → RESPOND",
+      "Web Harvest": "FETCH → CODE → STORE → RESPOND",
+      "Pure Fetch": "FETCH → RESPOND",
+      "Browser Quest": "BROWSE → [STORE] → RESPOND",
+      "Code and Store": "CODE → STORE → RESPOND  (run/execute + save/write — checked before Shell Strike)",
+      "Installation Stream": "SHELL → SHELL → RESPOND",
+      "Shell Strike": "SHELL → RESPOND  (single execution, no save)",
+      "Write Then Read": "STORE → RECALL → RESPOND  (write file then read it back)",
+      "Memory River": "RECALL → [CODE] → RESPOND",
+      "File Read": "RECALL → RESPOND",
+      "Notification Wave": "[FETCH|SHELL] → NOTIFY → RESPOND",
+      "Non-Action": "RESPOND (direct answer, no tools needed)"
+    },
+    "selection_signals": {
+      "has_url": "URL detected → FETCH pass",
+      "has_audio": "Audio file → TRANSFORM(ffmpeg/whisper)",
+      "has_transcribe": "transcri/speech/whisper → Transcription River",
+      "has_download": "download/fetch/grab → FETCH with curl",
+      "has_browse": "browse/navigate/scrape → BROWSE",
+      "has_shell": "install/npm/pip/git → SHELL",
+      "has_save": "save/write/output → STORE",
+      "has_recall": "remember/recall/find → RECALL",
+      "has_notify": "notify/alert/telegram → NOTIFY",
+      "is_multi_step": "then/after/next → multiple passes"
+    }
+  },
+  "agent_decision_tree": [
+    "1. Is this the start of a session? → call get_context() first, always.",
+    "2. Does the task involve more than one step? → use unfold(). Do not chain primitives manually.",
+    "3. Does it involve a URL? → check if binary (mp3/zip/pdf/exe) → unfold(), never web_fetch for binary.",
+    "4. Does it involve audio/video/transcription? → unfold() → server selects Transcription River.",
+    "5. Is it one known single operation I'm certain about? → use the appropriate primitive directly.",
+    "6. Am I unsure which primitive to use? → use unfold() and describe the task.",
+    "7. Do I need to remember something across sessions? → notes_write or db_exec, not memory_set.",
+    "8. Is the task complete? → report what actually happened, including pass_results from unfold."
+  ],
+  "recipes": {
+    "download_binary": "shell({ command: 'curl -L -o \"%TEMP%\\\\file.mp3\" \"https://example.com/file.mp3\"' })",
+    "download_and_transcribe": "// Step 1: unfold({ task: \"download https://... to %TEMP%/file.mp3\" })\n// Step 2: shell({ command: \"pip install openai-whisper\" })\n// Step 3: unfold({ task: \"transcribe %TEMP%/file.mp3\" })",
+    "install_whisper": "shell({ command: \"python -m pip install openai-whisper\" })",
+    "install_ffmpeg": "shell({ command: \"choco install ffmpeg -y\" })",
+    "run_python": "code_exec({ language: \"python\", code: \"print('hello')\" })",
+    "browse_page": "unfold({ task: \"browse https://example.com and extract the main content\" })",
+    "save_to_db": "db_exec({ sql: \"CREATE TABLE IF NOT EXISTS results (id INTEGER PRIMARY KEY, data TEXT, ts TEXT)\" })",
+    "telegram_send": "Set TG_BOT_TOKEN env var first",
+    "schedule_daily": "schedule_add({ id: \"daily_task\", expression: \"0 9 * * *\", command: \"echo daily\" })"
+  },
+  "persistence": {
+    "memory": {
+      "survives_restart": false,
+      "tool": "memory_set/get",
+      "use_for": "Session working state, temp values"
+    },
+    "notes": {
+      "survives_restart": true,
+      "tool": "notes_write/read",
+      "use_for": "Text output, transcripts, logs, markdown",
+      "path": "./notes"
+    },
+    "database": {
+      "survives_restart": true,
+      "tool": "db_exec/query",
+      "use_for": "Structured data, records, search",
+      "path": "./mcp-data.db"
+    },
+    "files": {
+      "survives_restart": true,
+      "tool": "fs_write/read",
+      "use_for": "Arbitrary files, scripts, exports"
+    }
+  },
+  "rules": [
+    "ALWAYS call get_context at session start.",
+    "ALWAYS use unfold() for multi-step tasks.",
+    "NEVER use web_fetch for binary files (MP3, ZIP, PDF, images). Use unfold() or shell+curl.",
+    "NEVER assume a tool works — check tool_capabilities[tool].status first.",
+    "NEVER use memory_set for data that must survive a restart — use notes or db.",
+    "If whisper is missing and transcription is needed, install it first: pip install openai-whisper",
+    "If ffmpeg is missing and audio conversion is needed, install it first."
+  ]
+}

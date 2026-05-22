@@ -1,0 +1,39 @@
+A remedial statute supplies a remedy or improves enforcement of existing rights rather than restricting them.
+
+Courts often construe remedial statutes liberally.
+
+Example:
+
+Tcherepnin v. Knight, 389 U.S. 332, 336 (1967).
+
+Severability.
+Courts will preserve the valid portions of a statute if the invalid parts can be severed.
+
+Example:
+
+Alaska Airlines, Inc. v. Brock, 480 U.S. 678, 684 (1987):
+“Unless it is evident that the Legislature would not have enacted those provisions which are within its power, independently of that which is not, the invalid part may be dropped if what is left is fully operative as a law.”
+
+That doctrine preserves the non-repugnant portions.
+
+“Substantive law creates, defines, and regulates rights, as opposed to procedural law, which prescribes the method of enforcing the rights.”
+— Sibbach v. Wilson & Co., 312 U.S. 1, 14 (1941).
+
+“A statute ought, upon the whole, to be so construed that, if it can be prevented, no clause, sentence, or word shall be superfluous, void, or insignificant.”
+— TRW Inc. v. Andrews, 534 U.S. 19, 31 (2001).
+
+Statutes in derogation of the common law are to be strictly construed.
+
+Shaw v. Railroad Co., 101 U.S. 557 (1883) (recognizing limits where statutes alter common law rights).
+
+“Remedial legislation should be construed broadly to effectuate its purposes.”
+— Tcherepnin v. Knight, 389 U.S. 332, 336 (1967).
+
+“Repeals by implication are not favored.”
+— Morton v. Mancari, 417 U.S. 535, 549 (1974).
+
+And older treatises such as Blackstone:
+
+“Statutes are not presumed to make any alteration in the common law further or otherwise than the act does expressly declare.”
+— Commentaries on the Laws of England
+
