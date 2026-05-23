@@ -4,7 +4,7 @@ https://rumble.com/v2mz5wy-know-your-constitution-with-carl-miller-annotated.htm
 
 https://zchg.org/t/carl-miller-complete-including-16-am-jur-2d-constitutional-law-supplemental/530
 
-ERROR is expected, express, and implied.  This is in BETA.  Do your own research.  NOT legal advice, & not intended to replace legal advice.
+ERROR is expected, express, and implied.  This is in BETA.  Do your own research.  NOT legal advice, & not intended to replace legal advice.  IN GOOD FAITH.  This bot has DIRECT access to your filesystem, and should be installed in an isolated environment.  Consult your nearest tech bro for advice.  NOT RESPONSIBLE FOR ANYTHING, as you will have read the LICENSE.
 
 *Index Source — 11 Am. Jur. 1st Ed., Constitutional Law §§ 1–382 (1937)*
 
