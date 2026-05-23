@@ -1,3 +1,5 @@
+<img width="1677" height="846" alt="image" src="https://github.com/user-attachments/assets/6648b6eb-704e-4172-ba45-0f17fac5c782" />
+
 https://rumble.com/v2mz5wy-know-your-constitution-with-carl-miller-annotated.html
 
 https://zchg.org/t/carl-miller-complete-including-16-am-jur-2d-constitutional-law-supplemental/530
