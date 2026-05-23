@@ -1,4 +1,4 @@
-<img width="1677" height="846" alt="image" src="https://github.com/user-attachments/assets/6648b6eb-704e-4172-ba45-0f17fac5c782" />
+<img width="1659" height="852" alt="image" src="https://github.com/user-attachments/assets/0ed753ca-1cee-4de5-b111-8021181ea8d1" />
 
 https://rumble.com/v2mz5wy-know-your-constitution-with-carl-miller-annotated.html
 
