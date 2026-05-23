@@ -1,5 +1,7 @@
 <img width="1659" height="852" alt="image" src="https://github.com/user-attachments/assets/0ed753ca-1cee-4de5-b111-8021181ea8d1" />
+
 https://rumble.com/v2mz5wy-know-your-constitution-with-carl-miller-annotated.html
+
 https://zchg.org/t/carl-miller-complete-including-16-am-jur-2d-constitutional-law-supplemental/530
 
 ERROR is expected, express, and implied.  This is in BETA.  Do your own research.  NOT legal advice, & not intended to replace legal advice.
