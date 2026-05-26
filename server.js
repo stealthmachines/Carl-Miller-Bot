@@ -1479,7 +1479,7 @@ async function callPrimitive(name, args = {}) {
       const candidates = history.filter(e => !PROTECTED.some(t => e.tags.includes(t)) && !e.tags.includes('folded'));
 
       const scored = candidates.map(entry => {
-        const fp  = `${entry.tags.join(',')}:${entry.role}:${entry.content.slice(0, 64)}`;
+        const fp  = `${(entry.tags ?? []).join(',')}:${entry.role}:${entry.content.slice(0, 64)}`;
         const raw = parseInt(crypto.createHash('sha256').update(fp).digest('hex').slice(0, 8), 16) / 0xFFFFFFFF;
         const phiScore = (raw * PHI) % 1;
         const ageMs = Date.now() - new Date(entry.timestamp).getTime();
@@ -3184,7 +3184,7 @@ function erlPhiRecall(ledger, { branch = 'session_context', budget = 8, phi_thre
   const AGE_OCTAVES = [8, 24, 72, 168, Infinity].map(h => h * 3600000);
 
   const scored = history.map(entry => {
-    const fingerprint = `${entry.tags.join(',')}:${entry.role}:${entry.content.slice(0, 64)}`;
+    const fingerprint = `${(entry.tags ?? []).join(',')}:${entry.role}:${entry.content.slice(0, 64)}`;
     const raw = parseInt(
       crypto.createHash('sha256').update(fingerprint).digest('hex').slice(0, 8), 16
     ) / 0xFFFFFFFF;

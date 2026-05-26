@@ -57,8 +57,8 @@
       ],
       "sessionId": null
     },
-    "1e663f2ac537af09510f334085e2639397151f0903b1387ee606edd3113f35e7": {
-      "id": "1e663f2ac537af09510f334085e2639397151f0903b1387ee606edd3113f35e7",
+    "cc3929a82b0e741e2b5c1d7573a5c4985c8a5729f178e1469ccaef679a4b97d8": {
+      "id": "cc3929a82b0e741e2b5c1d7573a5c4985c8a5729f178e1469ccaef679a4b97d8",
       "parentId": "205f115269ca1e8ef6946eb15cbb0e1b76e84f40e26e6d129c3544a52036b342",
       "branch": "session_context",
       "timestamp": "2026-05-22T00:00:00.000Z",
@@ -71,9 +71,9 @@
       ],
       "sessionId": null
     },
-    "1b390001eef598f16795022e1ffdec84d724d6678f2ebe2f4ddabce7f3d8c305": {
-      "id": "1b390001eef598f16795022e1ffdec84d724d6678f2ebe2f4ddabce7f3d8c305",
-      "parentId": "1e663f2ac537af09510f334085e2639397151f0903b1387ee606edd3113f35e7",
+    "a865a80e8d29676423411d4ebb4cc0eecd738745e11585f31a37d2b51d41ab61": {
+      "id": "a865a80e8d29676423411d4ebb4cc0eecd738745e11585f31a37d2b51d41ab61",
+      "parentId": "cc3929a82b0e741e2b5c1d7573a5c4985c8a5729f178e1469ccaef679a4b97d8",
       "branch": "session_context",
       "timestamp": "2026-05-22T12:00:00.000Z",
       "role": "observation",
@@ -86,18 +86,19 @@
       ],
       "sessionId": null
     },
-    "e51fbce747083f4746a841c3800f22de5e9a520260015d740fe40e7367cb73d2": {
-      "id": "e51fbce747083f4746a841c3800f22de5e9a520260015d740fe40e7367cb73d2",
-      "parentId": "1b390001eef598f16795022e1ffdec84d724d6678f2ebe2f4ddabce7f3d8c305",
+    "c3171cc24f8f592db52167f58f76f4d3f9d7fe64010fbf531f611574eec32d0f": {
+      "id": "c3171cc24f8f592db52167f58f76f4d3f9d7fe64010fbf531f611574eec32d0f",
+      "parentId": "a865a80e8d29676423411d4ebb4cc0eecd738745e11585f31a37d2b51d41ab61",
       "branch": "session_context",
       "timestamp": "2026-05-22T23:49:29.162Z",
       "role": "observation",
-      "content": "{\"event\":\"corpus_and_context_update\",\"date\":\"2026-05-22\",\"project\":\"carl-miller-bot5\",\"changes\":[\"Samuel Johnson Dictionary sub-corpus registered: 4 files (samuel_johnson_dictionary.json [16494 entries], Samuel Johnson Dictionary Combined FINAL.txt [310940 lines], charmap.json [44 char maps], lexicon.json [s_words/s_midword/f_words indexes])\",\"SYSTEM_CONTEXT.md: Reference Materials table expanded with per-file rows and schemas for all 4 Dictionary files\",\"SYSTEM_PROMPT.md: corpus table updated with 4 Dictionary rows; query examples upgraded to structured JSON lookup (dict.entries[HEADWORD]) + full-text fallback\",\"SYSTEM_CONTEXT.json: dictionary_dir replaced with dictionary object (structured_json, full_text, charmap, lexicon_index, entry_count, coverage, entry_schema, usage_note); corpus_stats gained dictionary_entries/dictionary_coverage fields\",\"notes/OCR_REFERENCE_KNOWLEDGE.md: Samuel Johnson Dictionary section added\"]}"
+      "content": "{\"event\":\"corpus_and_context_update\",\"date\":\"2026-05-22\",\"project\":\"carl-miller-bot5\",\"changes\":[\"Samuel Johnson Dictionary sub-corpus registered: 4 files (samuel_johnson_dictionary.json [16494 entries], Samuel Johnson Dictionary Combined FINAL.txt [310940 lines], charmap.json [44 char maps], lexicon.json [s_words/s_midword/f_words indexes])\",\"SYSTEM_CONTEXT.md: Reference Materials table expanded with per-file rows and schemas for all 4 Dictionary files\",\"SYSTEM_PROMPT.md: corpus table updated with 4 Dictionary rows; query examples upgraded to structured JSON lookup (dict.entries[HEADWORD]) + full-text fallback\",\"SYSTEM_CONTEXT.json: dictionary_dir replaced with dictionary object (structured_json, full_text, charmap, lexicon_index, entry_count, coverage, entry_schema, usage_note); corpus_stats gained dictionary_entries/dictionary_coverage fields\",\"notes/OCR_REFERENCE_KNOWLEDGE.md: Samuel Johnson Dictionary section added\"]}",
+      "tags": []
     }
   },
   "branches": {
     "main": null,
-    "session_context": "e51fbce747083f4746a841c3800f22de5e9a520260015d740fe40e7367cb73d2",
+    "session_context": "c3171cc24f8f592db52167f58f76f4d3f9d7fe64010fbf531f611574eec32d0f",
     "twin_flame_probes": "e6055e3d73dc184f25773737298eabe91cca64361948e447bba09cb3385b61bb",
     "twin_flame_evals": "9213d72ed9a0843bd53fee0eeafd2af42ea4a1190599b8b2d5601c55c302f6af"
   },

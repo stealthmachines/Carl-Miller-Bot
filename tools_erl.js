@@ -8,9 +8,9 @@ export async function tool_erl_history(args = {}) {
   const ledger = getLedger();
   const branch = args.branch || "main";
   const limit = args.limit || 20;
-  
+
   const history = erlHistory(ledger, { branch, limit });
-  
+
   return {
     branch,
     count: history.length,
@@ -19,7 +19,7 @@ export async function tool_erl_history(args = {}) {
       timestamp: e.timestamp.split('T')[1].split('.')[0],
       role: e.role,
       branch: e.branch,
-      tags: e.tags.join(", "),
+      tags: (e.tags ?? []).join(", "),
       content: e.content.length > 200 ? e.content.substring(0, 200) + "..." : e.content
     }))
   };
@@ -33,9 +33,9 @@ export async function tool_erl_search(args = {}) {
   const role = args.role || null;
   const tags = args.tags || [];
   const limit = args.limit || 20;
-  
+
   const results = erlSearch(ledger, { query, branch, role, tags, limit });
-  
+
   return {
     query,
     count: results.length,
@@ -44,7 +44,7 @@ export async function tool_erl_search(args = {}) {
       timestamp: e.timestamp,
       branch: e.branch,
       role: e.role,
-      tags: e.tags.join(", "),
+      tags: (e.tags ?? []).join(", "),
       content: e.content
     }))
   };
@@ -54,9 +54,9 @@ export async function tool_erl_search(args = {}) {
 export async function tool_erl_verify(args = {}) {
   const ledger = getLedger();
   const branch = args.branch || "main";
-  
+
   const verification = erlVerify(ledger, branch);
-  
+
   return {
     branch,
     valid: verification.valid,
@@ -71,13 +71,13 @@ export async function tool_erl_merge(args = {}) {
   const ledger = getLedger();
   const fromBranch = args.from_branch;
   const intoBranch = args.into_branch || "main";
-  
+
   if (!fromBranch) {
     throw new Error("from_branch is required");
   }
-  
+
   const result = erlMerge(ledger, { from_branch: fromBranch, into_branch: intoBranch });
-  
+
   return {
     from: fromBranch,
     into: intoBranch,
@@ -91,17 +91,17 @@ export async function tool_erl_create_branch(args = {}) {
   const ledger = getLedger();
   const name = args.name;
   const fromBranch = args.from_branch || "main";
-  
+
   if (!name) {
     throw new Error("branch name is required");
   }
-  
+
   if (ledger.branches[name] !== undefined) {
     throw new Error(`branch '${name}' already exists`);
   }
-  
+
   const result = erlBranch(ledger, { name, from_branch: fromBranch });
-  
+
   return {
     branch: name,
     diverged_from: result.diverged_from ? result.diverged_from.substring(0, 16) + "..." : null,
@@ -116,13 +116,13 @@ export async function tool_erl_append(args = {}) {
   const role = args.role || "thought";
   const content = args.content;
   const tags = args.tags || [];
-  
+
   if (!content) {
     throw new Error("content is required");
   }
-  
+
   const entry = erlAppend(ledger, { branch, role, content, tags });
-  
+
   return {
     id: entry.id.substring(0, 16) + "...",
     branch,
