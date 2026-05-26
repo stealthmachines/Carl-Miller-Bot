@@ -70,7 +70,21 @@ const LOG_FILE   = process.env.MCP_LOG    || path.join(process.cwd(), "mcp-audit
 const DB_FILE    = process.env.MCP_DB     || path.join(process.cwd(), "mcp-data.db");
 const NOTES_DIR  = process.env.MCP_NOTES  || path.join(process.cwd(), "notes");
 const LEDGER_FILE= process.env.MCP_LEDGER || path.join(process.cwd(), "erl-ledger.json");
+const SYSTEM_PROMPT_FILE = process.env.MCP_SYSTEM_PROMPT || path.join(process.cwd(), "SYSTEM_PROMPT.md");
 const IS_WIN     = process.platform === "win32";
+
+let _cachedSystemPrompt = null;
+function loadSystemPrompt() {
+  if (_cachedSystemPrompt !== null) return _cachedSystemPrompt;
+  try {
+    const raw = fs.readFileSync(SYSTEM_PROMPT_FILE, 'utf8');
+    const sepIdx = raw.lastIndexOf('\u2550\u2550\u2550');
+    _cachedSystemPrompt = sepIdx !== -1
+      ? raw.slice(raw.indexOf('\n', sepIdx) + 1).trim()
+      : raw.split('\n').slice(raw.split('\n').findIndex(l => l.length > 0 && !l.startsWith('#'))).join('\n').trim();
+  } catch { _cachedSystemPrompt = ''; }
+  return _cachedSystemPrompt;
+}
 
 // ═════════════════════════════════════════════════════════════════════════════
 // ELEGANT RECURSIVE LEDGER  —  ERL V3 (JS port)
@@ -1686,9 +1700,14 @@ async function callPrimitive(name, args = {}) {
       const branch    = args.branch      || 'session_context';
       if (!args.prompt) return { error: 'prompt is required' };
 
+      const sysTxt = args.system === false ? '' : (args.system || loadSystemPrompt());
+      const messages = [];
+      if (sysTxt) messages.push({ role: 'system', content: sysTxt });
+      messages.push({ role: 'user', content: args.prompt });
+
       const body = {
         ...(args.model ? { model: args.model } : {}),  // omit → LM Studio uses loaded model
-        messages:    [{ role: 'user', content: args.prompt }],
+        messages,
         max_tokens:  maxTokens,
         temperature: args.temperature ?? 0.7,
         stream:      false,
