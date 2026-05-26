@@ -975,6 +975,8 @@ console.log(`${c.gray}Node ${process.version}  ·  ${process.platform}/${process
 await ensureLmsServer();
 
 // ── Model picker ──────────────────────────────────────────────────────────────
+let chosenLlm1 = null;  // set by picker; forwarded to coord-proxy as LLM1/LLM2
+
 if (!NO_PICKER) {
   const pick = await runModelPicker();
 
@@ -995,11 +997,14 @@ if (!NO_PICKER) {
       const slot = await askSlot(pick.model.name, curSlots);
       if (slot === 'slot1') {
         await lmsLoadModelSync(resolvedKey, ':1');        // load as :1 identifier
+        chosenLlm1 = resolvedKey;
       } else if (slot === 'slot2') {
         await lmsLoadModelSync(resolvedKey, ':2');        // load as :2 identifier
+        chosenLlm1 = resolvedKey;
       } else if (slot === 'both') {
         await lmsLoadModelSync(resolvedKey, ':1');
         await lmsLoadModelSync(resolvedKey, ':2');
+        chosenLlm1 = resolvedKey;
       }
       // 'skip' → imported but not loaded now
     }
@@ -1008,14 +1013,37 @@ if (!NO_PICKER) {
     const slot = await askSlot(pick.modelId, curSlots);
     if (slot === 'slot1') {
       await lmsLoadModelSync(pick.modelId, ':1');
+      chosenLlm1 = pick.modelId;
     } else if (slot === 'slot2') {
       await lmsLoadModelSync(pick.modelId, ':2');
+      chosenLlm1 = pick.modelId;
     } else if (slot === 'both') {
       await lmsLoadModelSync(pick.modelId, ':1');
       await lmsLoadModelSync(pick.modelId, ':2');
+      chosenLlm1 = pick.modelId;
     }
   }
   // 'skip' → do nothing
+}
+
+// If nothing was chosen via the picker, fall back to whatever is already loaded
+if (!chosenLlm1) {
+  const lmFallback = await checkLmStudio();
+  if (lmFallback.up && lmFallback.models.length > 0) {
+    // First model that isn't an embedding or a phantom @? entry
+    const useful = lmFallback.models.find(m => !m.includes('@?') && !m.toLowerCase().includes('embed'));
+    if (useful) chosenLlm1 = useful.replace(/:[0-9]+$/, '');  // strip any slot suffix
+  }
+}
+
+// Forward the chosen model to coord-proxy so it routes to the right LLM
+if (chosenLlm1) {
+  const proxyEntry = STACK.find(s => s.script === 'coord-proxy.js');
+  if (proxyEntry) {
+    proxyEntry.env.LLM1 = chosenLlm1;
+    proxyEntry.env.LLM2 = chosenLlm1 + ':2';
+    console.log(`${c.cyan}[proxy]${c.reset} LLM1=${c.bold}${chosenLlm1}${c.reset}  LLM2=${c.bold}${chosenLlm1}:2${c.reset}`);
+  }
 }
 
 // ── Final status before spawning ──────────────────────────────────────────────

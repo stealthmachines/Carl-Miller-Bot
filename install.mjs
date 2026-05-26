@@ -420,27 +420,30 @@ head('Step 5/6 — Load model');
 function findModelKey() {
   const r = lms('ls');
   if (!r.ok) return null;
-  // Look for a line containing the filename or a recognizable part of it
+  // Derive the quant pattern from MODEL_KEY (e.g. 'qwen3.5-9b@q6_k_xl' → 'q6_k_xl')
+  const quantPart = MODEL_KEY.includes('@') ? MODEL_KEY.split('@')[1] : MODEL_KEY;
+  const stemPart  = MODEL_FILENAME.replace(/\.gguf$/i, '').toLowerCase();
   const lines = r.out.split('\n');
   for (const line of lines) {
     const l = line.toLowerCase();
-    if (l.includes('q2_k_xl') || l.includes('qwen3.5-9b-ud-q2')) {
-      // Extract first token (the model key)
+    // Match by quant pattern or by filename stem
+    if (l.includes(quantPart) || l.includes(stemPart.slice(0, 20))) {
       const key = line.trim().split(/\s+/)[0];
-      if (key && key.length > 3) return key;
+      if (key && key.length > 3 && key !== 'imported') return key;
     }
   }
   return null;
 }
 
-if (modelIsLoaded('q2_k_xl')) {
+const modelKeyFragment = MODEL_KEY.includes('@') ? MODEL_KEY.split('@')[1] : MODEL_KEY;
+if (modelIsLoaded(modelKeyFragment)) {
   ok('Model already loaded in memory');
 } else {
   const modelKey = findModelKey() || MODEL_KEY;
   info(`Loading model: ${modelKey}`);
   info('(This may take 30–90 seconds the first time)');
   const loaded = await lmsAsync(
-    ['load', modelKey, '-y', '--identifier', 'qwen3.5-9b@q2_k_xl'],
+    ['load', modelKey, '-y', '--identifier', MODEL_KEY],
     'lms load'
   );
   if (loaded) {
