@@ -145,7 +145,8 @@ async function pickVoiceModels() {
     if (res.ok) {
       const json = await res.json();
       loaded = (json.data ?? []).map(m => m.id ?? m.model ?? String(m))
-                               .filter(id => !id.includes('embed') && !id.includes('nomic'));
+                               .filter(id => !id.includes('embed') && !id.includes('nomic')
+                                         && id !== 'imported' && !id.startsWith('mmproj'));
     }
   } catch { /* LM Studio not up — use CLI defaults */ }
 
@@ -168,7 +169,7 @@ async function pickVoiceModels() {
     : (!isNaN(parseInt(ansA)) && loaded[parseInt(ansA) - 1]) ? loaded[parseInt(ansA) - 1] : ansA;
 
   // Voice B
-  const defaultB = loaded.find(m => m !== chosenA && !m.endsWith(':2')) ?? loaded[loaded.length > 1 ? 1 : 0] ?? MODEL_B;
+  const defaultB = loaded.find(m => m !== chosenA && !m.endsWith(':2')) ?? chosenA ?? MODEL_B;
   const ansB = await ask(`  ${c.yellow}Voice B${c.reset} ${c.dim}(port 3334)${c.reset} [default: ${c.bold}${defaultB}${c.reset}]: `);
   const chosenB = ansB === ''
     ? defaultB
