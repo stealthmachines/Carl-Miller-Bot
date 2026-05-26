@@ -23,7 +23,7 @@
  */
 
 import { spawn, execSync, spawnSync } from 'child_process';
-import { existsSync, mkdirSync, writeFileSync, readFileSync, copyFileSync, readdirSync, statSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync, readFileSync, copyFileSync, readdirSync, statSync, watch as fsWatch } from 'fs';
 import { createServer }   from 'net';
 import { createInterface } from 'readline';
 import { fileURLToPath }  from 'url';
@@ -995,11 +995,11 @@ if (!NO_PICKER) {
       console.log(`${c.green}[LM Studio]${c.reset} Import complete — key: ${c.bold}${resolvedKey}${c.reset}`);
       const slot = await askSlot(pick.model.name, curSlots);
       if (slot === 'slot1') {
-        await lmsLoadModelSync(resolvedKey, '');          // load as primary identifier
+        await lmsLoadModelSync(resolvedKey, ':1');        // load as :1 identifier
       } else if (slot === 'slot2') {
         await lmsLoadModelSync(resolvedKey, ':2');        // load as :2 identifier
       } else if (slot === 'both') {
-        await lmsLoadModelSync(resolvedKey, '');
+        await lmsLoadModelSync(resolvedKey, ':1');
         await lmsLoadModelSync(resolvedKey, ':2');
       }
       // 'skip' → imported but not loaded now
@@ -1008,11 +1008,11 @@ if (!NO_PICKER) {
   } else if (pick.action === 'load-id') {
     const slot = await askSlot(pick.modelId, curSlots);
     if (slot === 'slot1') {
-      await lmsLoadModelSync(pick.modelId, '');
+      await lmsLoadModelSync(pick.modelId, ':1');
     } else if (slot === 'slot2') {
       await lmsLoadModelSync(pick.modelId, ':2');
     } else if (slot === 'both') {
-      await lmsLoadModelSync(pick.modelId, '');
+      await lmsLoadModelSync(pick.modelId, ':1');
       await lmsLoadModelSync(pick.modelId, ':2');
     }
   }
@@ -1038,3 +1038,19 @@ for (const proc of STACK) {
 startHealthWriter();
 
 console.log(`\n${c.bold}Stack running.${c.reset}  ${c.gray}Ctrl+C to stop all.${c.reset}\n`);
+
+// Watch for new LM Studio conversations and immediately inject the system prompt
+// This fires whenever LM Studio creates a new chat (e.g. user clicks "New Chat")
+try {
+  const convDir = path.join(HOME, '.lmstudio', 'conversations');
+  if (existsSync(convDir)) {
+    let debounce = null;
+    fsWatch(convDir, { persistent: false }, (event, filename) => {
+      if (!filename?.endsWith('.conversation.json')) return;
+      // Debounce: LM Studio writes the file in multiple passes
+      clearTimeout(debounce);
+      debounce = setTimeout(() => syncSystemPromptToLmStudio(), 800);
+    });
+    console.log(`${c.dim}[sysprompt]${c.reset} Watching for new LM Studio conversations...`);
+  }
+} catch { /* non-fatal */ }
