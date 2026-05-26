@@ -493,7 +493,7 @@ async function showStatus() {
     } else {
       for (const m of lm.models) console.log(`  ${c.green}●${c.reset}  ${m}`);
     }
-    const EXPECTED = ['qwen3.5-9b@q3_k_xl:2', 'qwen3.5-9b@q3_k_xl'];
+    const EXPECTED = ['qwen3.5-9b@q6_k_xl:2', 'qwen3.5-9b@q6_k_xl'];
     const missing  = EXPECTED.filter(e => !lm.models.includes(e));
     if (missing.length) {
       console.log(`\n  ${c.yellow}⚠  Demo scripts expect:${c.reset}`);

@@ -59,8 +59,8 @@ const argv    = process.argv.slice(2);
 const arg     = (flag, def) => { const i = argv.indexOf(flag); return i >= 0 ? argv[i+1] ?? def : def; };
 const hasFlag = (flag) => argv.includes(flag);
 
-const MODEL_A      = arg('--modelA',      'qwen3.5-9b@q3_k_xl:2');
-const MODEL_B      = arg('--modelB',      'qwen3.5-9b@q3_k_xl');
+const MODEL_A      = arg('--modelA',      'qwen3.5-9b@q6_k_xl:2');
+const MODEL_B      = arg('--modelB',      'qwen3.5-9b@q6_k_xl');
 const CLOUD_PROV   = arg('--cloud',       'anthropic');          // anthropic | openai | none
 const CLOUD_URL    = arg('--cloud-url',   '');                   // custom OpenAI-compat base URL
 const TEMP         = parseFloat(arg('--temp',       '0.7'));

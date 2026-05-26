@@ -14,8 +14,8 @@
  * Same request geometry → same mode. Different content → naturally distributed.
  *
  * LLM pairing:
- *   LLM1 (qwen3.5-9b@q3_k_xl)    ↔  MCP tools on port 3333  (ctx: 200,000)
- *   LLM2 (qwen3.5-9b@q3_k_xl:2)  ↔  MCP tools on port 3334  (ctx: 199,999)
+ *   LLM1 (qwen3.5-9b@q6_k_xl)    ↔  MCP tools on port 3333  (ctx: 200,000)
+ *   LLM2 (qwen3.5-9b@q6_k_xl:2)  ↔  MCP tools on port 3334  (ctx: 199,999)
  *
  * Every coordination event is committed to erl-ledger.json (hash-chained).
  *
@@ -40,8 +40,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROXY_PORT  = parseInt(process.env.COORD_PORT  || '1233');
 const LLM_HOST    = process.env.LLM_HOST || '127.0.0.1';
 const LLM_PORT    = parseInt(process.env.LLM_PORT    || '1234');
-const LLM1        = process.env.LLM1 || 'qwen3.5-9b@q3_k_xl';
-const LLM2        = process.env.LLM2 || 'qwen3.5-9b@q3_k_xl:2';
+const LLM1        = process.env.LLM1 || 'qwen3.5-9b@q6_k_xl';
+const LLM2        = process.env.LLM2 || 'qwen3.5-9b@q6_k_xl:2';
 const STATE_DIR   = path.join(__dirname, 'wuwei-routing', 'state');
 const LEDGER_FILE = path.join(__dirname, 'erl-ledger.json');
 
