@@ -69,8 +69,31 @@ const PORT       = parseInt(process.env.MCP_PORT   || "3333");
 const LOG_FILE   = process.env.MCP_LOG    || path.join(process.cwd(), "mcp-audit.log");
 const DB_FILE    = process.env.MCP_DB     || path.join(process.cwd(), "mcp-data.db");
 const NOTES_DIR  = process.env.MCP_NOTES  || path.join(process.cwd(), "notes");
-const LEDGER_FILE= process.env.MCP_LEDGER || path.join(process.cwd(), "erl-ledger.json");
+const LEDGER_FILE     = process.env.MCP_LEDGER      || path.join(process.cwd(), "erl-ledger.json");
+const SYSTEM_PROMPT_FILE = process.env.MCP_SYSTEM_PROMPT || path.join(process.cwd(), "SYSTEM_PROMPT.md");
 const IS_WIN     = process.platform === "win32";
+
+// ── System prompt (lazy-loaded once, stripped of Markdown comment header) ─────
+let _systemPrompt = null;
+function loadSystemPrompt() {
+  if (_systemPrompt !== null) return _systemPrompt;
+  try {
+    const raw = fs.readFileSync(SYSTEM_PROMPT_FILE, 'utf8');
+    // Split on the last ═══ separator (end of file header comment block)
+    const sepIdx = raw.lastIndexOf('═══');
+    if (sepIdx !== -1) {
+      _systemPrompt = raw.slice(raw.indexOf('\n', sepIdx) + 1).trim();
+    } else {
+      // fallback: skip every leading line that starts with '#'
+      const lines = raw.split('\n');
+      const first = lines.findIndex(l => l.length > 0 && !l.startsWith('#'));
+      _systemPrompt = lines.slice(first).join('\n').trim();
+    }
+  } catch {
+    _systemPrompt = '';
+  }
+  return _systemPrompt;
+}
 
 // ═════════════════════════════════════════════════════════════════════════════
 // ELEGANT RECURSIVE LEDGER  —  ERL V3 (JS port)
@@ -1686,9 +1709,15 @@ async function callPrimitive(name, args = {}) {
       const branch    = args.branch      || 'session_context';
       if (!args.prompt) return { error: 'prompt is required' };
 
+      // Build message list — prepend system prompt unless caller explicitly passes system:false
+      const sysTxt = args.system === false ? '' : (args.system || loadSystemPrompt());
+      const messages = [];
+      if (sysTxt) messages.push({ role: 'system', content: sysTxt });
+      messages.push({ role: 'user', content: args.prompt });
+
       const body = {
         ...(args.model ? { model: args.model } : {}),  // omit → LM Studio uses loaded model
-        messages:    [{ role: 'user', content: args.prompt }],
+        messages,
         max_tokens:  maxTokens,
         temperature: args.temperature ?? 0.7,
         stream:      false,
@@ -2018,6 +2047,7 @@ const TOOLS = [
     ].join(" "),
     inputSchema: { type:"object", required:["prompt"], properties:{
       prompt:      { type:"string",  description:"The prompt to send to LM Studio" },
+      system:      { type:"string",  description:"System prompt override. Omit to auto-load SYSTEM_PROMPT.md. Pass false to send no system prompt." },
       model:       { type:"string",  description:"Model name — omit to use LM Studio's currently loaded model" },
       lm_port:     { type:"number",  description:"LM Studio port (default 1234)" },
       max_tokens:  { type:"number",  description:"Max response tokens (default 512)" },

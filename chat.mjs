@@ -34,7 +34,25 @@
 import http            from 'http';
 import https           from 'https';
 import crypto          from 'crypto';
+import fs              from 'fs';
+import path            from 'path';
+import { fileURLToPath } from 'url';
 import { createInterface } from 'readline';
+
+// ── Load Carl Miller system prompt ───────────────────────────────────────────
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+function loadSystemPrompt() {
+  try {
+    const raw = fs.readFileSync(path.join(__dirname, 'SYSTEM_PROMPT.md'), 'utf8');
+    const sepIdx = raw.lastIndexOf('═══');
+    if (sepIdx !== -1) return raw.slice(raw.indexOf('\n', sepIdx) + 1).trim();
+    // fallback: skip leading # comment lines
+    const lines = raw.split('\n');
+    const first = lines.findIndex(l => l.length > 0 && !l.startsWith('#'));
+    return lines.slice(first).join('\n').trim();
+  } catch { return ''; }
+}
+const SYSTEM_PROMPT = loadSystemPrompt();
 
 // ── ANSI colours ──────────────────────────────────────────────────────────────
 const TTY = process.stdout.isTTY;
@@ -271,11 +289,13 @@ async function callCloud(userMessage) {
 
     // ── Anthropic Messages API ────────────────────────────────────────────────
     if (CLOUD_PROV === 'anthropic' && !CLOUD_URL) {
-      const body = JSON.stringify({
+      const bodyObj = {
         model:      CLOUD_MODEL,
         max_tokens: MAX_TOK,
         messages:   cloudHistory.map(m => ({ role: m.role, content: m.content })),
-      });
+      };
+      if (SYSTEM_PROMPT) bodyObj.system = SYSTEM_PROMPT;
+      const body = JSON.stringify(bodyObj);
 
       responseText = await new Promise((resolve, reject) => {
         const req = https.request({
@@ -311,11 +331,14 @@ async function callCloud(userMessage) {
       const isHttps  = url.protocol === 'https:';
       const transport = isHttps ? https : http;
 
+      const messages = SYSTEM_PROMPT
+        ? [{ role: 'system', content: SYSTEM_PROMPT }, ...cloudHistory]
+        : cloudHistory;
       const body = JSON.stringify({
         model:      CLOUD_MODEL,
         max_tokens: MAX_TOK,
         temperature: TEMP,
-        messages:   cloudHistory,
+        messages,
       });
 
       responseText = await new Promise((resolve, reject) => {
