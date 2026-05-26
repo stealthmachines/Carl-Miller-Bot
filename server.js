@@ -3068,6 +3068,40 @@ const httpServer = http.createServer(async (req, res) => {
     return;
   }
 
+  // ── Tool bridge for coord-proxy ──────────────────────────────────────────
+  // GET  /tools  — returns the TOOLS array in OpenAI-compatible format
+  // POST /call   — executes a single tool call and returns the result
+
+  if (url.pathname === '/tools' && req.method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ tools: TOOLS }));
+    return;
+  }
+
+  if (url.pathname === '/call' && req.method === 'POST') {
+    let body = '';
+    req.on('data', c => body += c);
+    req.on('end', async () => {
+      try {
+        const { name, arguments: args } = JSON.parse(body);
+        let result;
+        if (name === 'unfold') {
+          result = await unfold(args.task, { cwd: args.cwd, env: args.env, telegram_token: args.telegram_token });
+        } else {
+          result = await callPrimitive(name, args || {});
+        }
+        audit(name, args, true);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }));
+      } catch (e) {
+        audit('unknown', {}, false);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ content: [{ type: 'text', text: `ERROR: ${e.message}` }], isError: true }));
+      }
+    });
+    return;
+  }
+
   if (url.pathname==="/sse" && req.method==="GET") {
     const mcpServer = createMcpServer();
     const transport = new SSEServerTransport("/message", res);

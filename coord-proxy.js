@@ -121,17 +121,82 @@ function erlAppend(role, content, tags = [], branch = 'coord') {
   }
 }
 
-// ─── LLM CALL ────────────────────────────────────────────────────────────────
+// ─── MCP TOOL BRIDGE ─────────────────────────────────────────────────────────
 
-function callLlm(model, messages, overrides = {}) {
+const MCP_PORT = 3333;  // primary MCP server — same tool set on both 3333/3334
+
+// Convert MCP inputSchema format → OpenAI function tool format
+function mcpToOpenAiTool(t) {
+  return {
+    type: 'function',
+    function: {
+      name:        t.name,
+      description: t.description ?? '',
+      parameters:  t.inputSchema ?? { type: 'object', properties: {} },
+    },
+  };
+}
+
+let _toolsCache = null;
+async function fetchMcpTools() {
+  if (_toolsCache) return _toolsCache;
+  try {
+    const raw = await new Promise((resolve, reject) => {
+      const req = http.request(
+        { hostname: '127.0.0.1', port: MCP_PORT, path: '/tools', method: 'GET', timeout: 5000 },
+        res => { let d = ''; res.on('data', c => d += c); res.on('end', () => resolve(d)); }
+      );
+      req.on('error', reject);
+      req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
+      req.end();
+    });
+    const { tools } = JSON.parse(raw);
+    _toolsCache = (tools || []).map(mcpToOpenAiTool);
+    console.log(`[tools] loaded ${_toolsCache.length} tools from MCP server :${MCP_PORT}`);
+    return _toolsCache;
+  } catch (e) {
+    console.log(`[tools] MCP server not reachable — running without tools (${e.message})`);
+    return [];
+  }
+}
+
+async function callMcpTool(name, args) {
+  return new Promise(resolve => {
+    const body = JSON.stringify({ name, arguments: args });
+    const req = http.request({
+      hostname: '127.0.0.1', port: MCP_PORT, path: '/call', method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
+      timeout: 120000,
+    }, res => {
+      let d = '';
+      res.on('data', c => d += c);
+      res.on('end', () => {
+        try {
+          const r = JSON.parse(d);
+          resolve(r.content?.[0]?.text ?? JSON.stringify(r));
+        } catch { resolve(d); }
+      });
+    });
+    req.on('error', e => resolve(`ERROR calling tool ${name}: ${e.message}`));
+    req.on('timeout', () => { req.destroy(); resolve(`ERROR: tool ${name} timed out`); });
+    req.write(body);
+    req.end();
+  });
+}
+
+// ─── LLM CALL (with tool-use loop) ───────────────────────────────────────────
+
+function rawLlmCall(model, messages, tools, overrides) {
   return new Promise((resolve, reject) => {
-    const payload = JSON.stringify({
+    const body = {
       model,
       messages,
-      temperature : overrides.temperature  ?? 0.7,
-      max_tokens  : overrides.max_tokens   ?? 2048,
-      stream      : false
-    });
+      temperature : overrides.temperature ?? 0.7,
+      max_tokens  : overrides.max_tokens  ?? 2048,
+      stream      : false,
+    };
+    if (tools && tools.length > 0) { body.tools = tools; body.tool_choice = 'auto'; }
+    const payload = JSON.stringify(body);
 
     const req = http.request({
       hostname : LLM_HOST,
@@ -139,7 +204,7 @@ function callLlm(model, messages, overrides = {}) {
       path     : '/v1/chat/completions',
       method   : 'POST',
       headers  : { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) },
-      timeout  : 180000
+      timeout  : 180000,
     }, res => {
       let data = '';
       res.on('data', c => data += c);
@@ -148,12 +213,42 @@ function callLlm(model, messages, overrides = {}) {
         catch (e) { reject(new Error(`LLM parse error: ${e.message} | raw: ${data.slice(0, 300)}`)); }
       });
     });
-
     req.on('timeout', () => { req.destroy(); reject(new Error(`LLM timeout (${model})`)); });
     req.on('error', reject);
     req.write(payload);
     req.end();
   });
+}
+
+async function callLlm(model, messages, overrides = {}) {
+  const tools = await fetchMcpTools();
+  let currentMessages = [...messages];
+  const MAX_TOOL_TURNS = 8;
+
+  for (let turn = 0; turn <= MAX_TOOL_TURNS; turn++) {
+    const response = await rawLlmCall(model, currentMessages, tools, overrides);
+    const choice   = response?.choices?.[0];
+    const toolCalls = choice?.message?.tool_calls;
+
+    // No tool calls — final response
+    if (!toolCalls || toolCalls.length === 0 || turn === MAX_TOOL_TURNS) {
+      return response;
+    }
+
+    // Execute tool calls, feed results back
+    currentMessages = [
+      ...currentMessages,
+      { role: 'assistant', content: choice.message.content ?? null, tool_calls: toolCalls },
+    ];
+
+    for (const tc of toolCalls) {
+      let args = {};
+      try { args = JSON.parse(tc.function?.arguments || '{}'); } catch {}
+      console.log(`[tool] ${tc.function?.name}(${JSON.stringify(args).slice(0, 100)})`);
+      const result = await callMcpTool(tc.function?.name, args);
+      currentMessages.push({ role: 'tool', tool_call_id: tc.id, content: result });
+    }
+  }
 }
 
 function text(response) {
