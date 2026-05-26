@@ -333,7 +333,12 @@ async function lmsLoadModelSync(key, slot) {
   }
   const identifier = (slot != null && slot !== '') ? `${key}${slot}` : key;
   const lm = await checkLmStudio();
-  if (lm.up && lm.models.includes(identifier)) {
+  // Accept the model as already loaded if it appears under: the full identifier,
+  // the bare key (no slot suffix), or any loaded ID that starts with the base key.
+  const baseKey = key.replace(/:[0-9]+$/, '');
+  const isLoaded = lm.up && lm.models.some(m =>
+    m === identifier || m === key || m === baseKey || m.startsWith(baseKey + ':'));
+  if (isLoaded) {
     console.log(`${c.green}[LM Studio]${c.reset} ${identifier} is already loaded — skipping.`);
     return true;
   }
@@ -538,6 +543,9 @@ async function runModelPicker() {
 
   const models = scanAllModelDirs();
 
+  // byIdx maps display number → model object; built here so it stays in scope for lookup below
+  const byIdx = {};
+
   if (models.length === 0) {
     console.log(`\n  ${c.yellow}⚠  No .gguf files found in any default folder.${c.reset}`);
     console.log(`  Checked:`);
@@ -557,13 +565,12 @@ async function runModelPicker() {
     }
 
     let idx = 1;
-    const indexedModels = [];
     for (const [source, list] of Object.entries(bySource)) {
       console.log(`  ${c.bold}${source}${c.reset}`);
       for (const m of list) {
         const subdir = m.dir !== '.' ? `  ${c.dim}${m.dir}${c.reset}` : '';
         console.log(`    ${c.cyan}[${idx}]${c.reset}  ${m.name}  ${c.gray}(${m.sizeGB} GB)${subdir}`);
-        indexedModels.push({ idx: idx++, ...m });
+        byIdx[idx++] = m;  // same object, same order as the display
       }
       console.log();
     }
@@ -581,14 +588,6 @@ async function runModelPicker() {
   console.log(`    • A model ID (e.g. ${c.cyan}qwen3.5-9b@q3_k_xl${c.reset}) to load directly from LM Studio`);
   console.log(`    • A full path to a .gguf file not in the list`);
   console.log(`    • ${c.cyan}s${c.reset} or blank to skip ${skipHint}\n`);
-
-  const models_indexed = scanAllModelDirs(); // re-use same scan result via closure above
-
-  // Build a flat indexed array for lookup
-  const allFound = scanAllModelDirs();
-  let   n        = 1;
-  const byIdx    = {};
-  for (const m of allFound) byIdx[n++] = m;
 
   const answer = await prompt(`  ${c.bold}Your choice:${c.reset} `);
 
