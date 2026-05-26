@@ -714,19 +714,47 @@ function ensurePreset() {
   if (!existsSync(src)) {
     console.log(`${c.yellow}[preset]${c.reset} inference1.preset.json not found in project — skipping.`);
   } else {
-    const srcText  = readFileSync(src, 'utf8');
-    const destText = existsSync(dest) ? readFileSync(dest, 'utf8') : null;
-    if (srcText !== destText) {
+    // Parse the preset and inject the current system prompt before writing
+    let presetObj;
+    try { presetObj = JSON.parse(readFileSync(src, 'utf8')); }
+    catch (e) {
+      console.log(`${c.yellow}[preset]${c.reset} Could not parse preset JSON: ${e.message}`);
+      presetObj = null;
+    }
+    if (presetObj) {
+      const sysTxtPath = path.join(__dirname, 'SYSTEM_PROMPT.md');
+      let sysPromptText = '';
       try {
-        mkdirSync(path.dirname(dest), { recursive: true });
-        copyFileSync(src, dest);
-        presetWritten = true;
-        console.log(`${c.green}[preset]${c.reset} inference1.preset.json installed → ${dest}`);
-      } catch (e) {
-        console.log(`${c.yellow}[preset]${c.reset} Could not copy preset: ${e.message}`);
+        const raw = readFileSync(sysTxtPath, 'utf8');
+        const sepIdx = raw.lastIndexOf('═══');
+        if (sepIdx !== -1) {
+          sysPromptText = raw.slice(raw.indexOf('\n', sepIdx) + 1).trim();
+        } else {
+          const lines = raw.split('\n');
+          const first = lines.findIndex(l => l.length > 0 && !l.startsWith('#'));
+          sysPromptText = lines.slice(first < 0 ? 0 : first).join('\n').trim();
+        }
+      } catch { /* no SYSTEM_PROMPT.md — leave field empty */ }
+      if (sysPromptText) {
+        const fields = presetObj.operation?.fields ?? [];
+        const idx = fields.findIndex(f => f.key === 'llm.prediction.systemPrompt');
+        if (idx !== -1) { fields[idx].value = sysPromptText; }
+        else { fields.push({ key: 'llm.prediction.systemPrompt', value: sysPromptText }); }
       }
-    } else {
-      console.log(`${c.green}[preset]${c.reset} inference1.preset.json already up to date.`);
+      const srcText  = JSON.stringify(presetObj, null, 2);
+      const destText = existsSync(dest) ? readFileSync(dest, 'utf8') : null;
+      if (srcText !== destText) {
+        try {
+          mkdirSync(path.dirname(dest), { recursive: true });
+          writeFileSync(dest, srcText, 'utf8');
+          presetWritten = true;
+          console.log(`${c.green}[preset]${c.reset} inference1.preset.json installed → ${dest}`);
+        } catch (e) {
+          console.log(`${c.yellow}[preset]${c.reset} Could not write preset: ${e.message}`);
+        }
+      } else {
+        console.log(`${c.green}[preset]${c.reset} inference1.preset.json already up to date.`);
+      }
     }
   }
 

@@ -465,6 +465,11 @@ if (!NO_LOCAL && (voices.A || voices.B)) {
   const { modelA, modelB } = await pickVoiceModels();
   MODEL_A = modelA;
   MODEL_B = modelB;
+  // Deduplicate: if same model assigned to both voices, suppress Voice B
+  if (MODEL_A === MODEL_B && voices.B) {
+    voices.B = false;
+    console.log(`  ${c.yellow}⚠${c.reset}  Voice B skipped — same slot as A (${MODEL_A}). Running single-voice mode.`);
+  }
 }
 
 await showBanner(voices);
