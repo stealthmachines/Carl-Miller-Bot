@@ -1,65 +1,26 @@
-# Carl Miller Bot — MCP Server Context (v5)
-
-## Bot Identity
-- **Name**: Carl Miller Bot v5
-- **Domain**: Constitutional law — repugnancy doctrine and severability analysis
-- **Subject**: Carl Miller legal lectures and oral arguments
-
-### Primary Corpus (canonical, query first)
-| Key | Path | Notes |
-|-----|------|-------|
-| 11AmJur 1st Ed. | `Carl Miller/Corpus_Processed/MASTER/11AmJur1D.json` | OCR of 20 images, §§1–382, 1937 ed. |
-| Citation map | `Carl Miller/Corpus_Processed/citation_mapped_corpus.json` | 36 unique citations, 25 mapped to AmJur |
-| Citations index | `Carl Miller/citations_index.json` | 6,126 citations, 3,255 unique cases |
-| Transcript | `Carl Miller/Carl's Transcript/carl-miller-transcript.json` | Full Carl Miller lecture corpus |
-
-### Processed Corpus
-| Key | Path | Notes |
-|-----|------|-------|
-| Full corpus | `Carl Miller/Corpus_Processed/full_corpus.json` | 109 chunks, 328 definitions |
-| Topic-indexed | `Carl Miller/Corpus_Processed/topic_indexed_corpus.json` | 9 topics (Supremacy_Clause, Contract_Theory, etc.) |
-| Definitions | `Carl Miller/Corpus_Processed/definitions.json` | 328 extracted term-definition pairs |
-| Consolidated | `Carl Miller/Corpus_Processed/MASTER/consolidated_corpus.json` | 10 foundational docs + 123 Carl Miller chunks |
-| Master corpus | `Carl Miller/Corpus_Processed/MASTER/master_corpus.json` | 117 chunks, YouTube + audio, 11 topics |
-
-### Reference Materials
-| Resource | Path | Notes |
-|----------|------|-------|
-| Foundational docs (text) | `Carl Miller/Original Documents/For Bot/` (13 files) | |
-| **Samuel Johnson Dict. — structured** | `Carl Miller/Corpus_Processed/Dictionary/samuel_johnson_dictionary.json` | 16,494 entries; headword, pos, etymology, definitions, citations; editions 1755/1756/1773 combined |
-| Samuel Johnson Dict. — full text | `Carl Miller/Corpus_Processed/Dictionary/Samuel Johnson Dictionary Combined FINAL.txt` | 310,940 lines, 13 MB; A–Z plain text; use for full-context passage lookup |
-| Samuel Johnson Dict. — charmap | `Carl Miller/Corpus_Processed/Dictionary/charmap.json` | 44 OCR character corrections (e.g. ſ → f) |
-| Samuel Johnson Dict. — lexicon index | `Carl Miller/Corpus_Processed/Dictionary/lexicon.json` | s_words / s_midword / f_words search indexes |
-| Federalist Papers | `Carl Miller/Original Documents/misc/The-Complete-Federalist-Papers.pdf` |
-| Anti-Federalist Papers | `Carl Miller/Original Documents/misc/TheAntiFederalistPapers.pdf` |
-| 16AmJur2d images (fallback) | `Carl Miller/Original Documents/16AmJur2d_images/` (62 JPEGs) |
-
-### Foundational Documents (in `For Bot/`)
-Magna Carta (1215), Mayflower Compact (1620), Declaration of Independence (1776), Articles of Confederation (1781), Northwest Ordinance (1787), U.S. Constitution (1787), Marbury v. Madison (1803), Missouri Compromise (1820), severability.txt
-
-- **Notes**: `notes/` (5 files: OCR_WORKFLOW_OPERATIONS, OCR_PROGRESS_LOG, OCR_REFERENCE_KNOWLEDGE, MCP_ERL_SYSTEM, ROUTING_ARCHITECTURE)
+# MCP Server Context — 2026-05-26T17:04:20.989Z
 
 ## Host
 - OS: win32 (x64) | Windows: true
 - Shell: cmd.exe
-- CWD: `<project-root>` (machine-specific)
-- User: `<local-user>` @ `<local-hostname>`
+- CWD: C:\Users\Owner\Documents\Josef's Code 2026\Carl Miller Bot\carl-miller-bot5
+- User: desktop-2nek92i\owner @ DESKTOP-2NEK92I
 
 ## Available Shell Tools
-- ✓ node: v24.15.0
-- ✓ npm: 11.12.1
-- ✓ python: Python 3.10.6
-- ✓ pip: pip 25.0.1
-- ✓ git: git version 2.42.0.windows.1
-- ✓ curl: curl 8.19.0 (Windows) libcurl/8.19.0 Schannel zlib/1.3.1 WinIDN WinLDAP
-- ✓ wget: GNU Wget 1.25.0 built on cygwin.
-- ✓ ffmpeg: ffmpeg version 8.0-essentials_build-www.gyan.dev Copyright (c) 2000-2025 the FFmpeg developers
-- ✓ pwsh: PowerShell 7.6.1
+- ✓ whisper: C:\Users\Owner\AppData\Local\Programs\Python\Python310\Scripts\whisper.exe
+- ✓ pwsh: PowerShell 7.6.2
 - ✓ choco: 0.10.15
 - ✓ winget: v1.28.240
 
 ## Missing Shell Tools
-- ✗ whisper
+- ✗ node
+- ✗ npm
+- ✗ python
+- ✗ pip
+- ✗ git
+- ✗ curl
+- ✗ wget
+- ✗ ffmpeg
 
 ## Agent Decision Tree
 - 1. Is this the start of a session? → call get_context() first, always.
@@ -81,10 +42,10 @@ Magna Carta (1215), Mayflower Compact (1620), Declaration of Independence (1776)
 - If ffmpeg is missing and audio conversion is needed, install it first.
 
 ## Shell Guidance
-- Python binary: python
-- Download command: curl -L -o "<dest>" "<url>"
-- ffmpeg: ✓
-- whisper: ✗ not installed — pip install openai-whisper
+- Python binary: NOT FOUND
+- Download command: Invoke-WebRequest -Uri "<url>" -OutFile "<dest>"
+- ffmpeg: ✗ not installed
+- whisper: ✓
 
 ## Pass Architecture
 unfold() selects from these named strategies based on task signals:
@@ -105,19 +66,17 @@ unfold() selects from these named strategies based on task signals:
 ## Recipes (this machine)
 ### download_binary
 ```
-shell({ command: 'curl -L -o "%TEMP%\\file.mp3" "https://example.com/file.mp3"' })
+shell({ command: 'Invoke-WebRequest -Uri "https://..." -OutFile "C:\\tmp\\file.mp3"' })
 ```
 
 ### download_and_transcribe
 ```
-// Step 1: unfold({ task: "download https://... to %TEMP%/file.mp3" })
-// Step 2: shell({ command: "pip install openai-whisper" })
-// Step 3: unfold({ task: "transcribe %TEMP%/file.mp3" })
+unfold({ task: "download https://example.com/file.mp3 and transcribe it" })
 ```
 
 ### install_whisper
 ```
-shell({ command: "python -m pip install openai-whisper" })
+python not found in PATH
 ```
 
 ### install_ffmpeg
@@ -127,7 +86,7 @@ shell({ command: "choco install ffmpeg -y" })
 
 ### run_python
 ```
-code_exec({ language: "python", code: "print('hello')" })
+python not found — install from python.org
 ```
 
 ### browse_page
@@ -152,6 +111,6 @@ schedule_add({ id: "daily_task", expression: "0 9 * * *", command: "echo daily" 
 
 ## Persistence
 - **memory**: memory_set/get | persists: false | Session working state, temp values
-- **notes**: notes_write/read | persists: true | Text output, transcripts, logs, markdown | path: `./notes`
-- **database**: db_exec/query | persists: true | Structured data, records, search | path: `./mcp-data.db`
+- **notes**: notes_write/read | persists: true | Text output, transcripts, logs, markdown
+- **database**: db_exec/query | persists: true | Structured data, records, search
 - **files**: fs_write/read | persists: true | Arbitrary files, scripts, exports
