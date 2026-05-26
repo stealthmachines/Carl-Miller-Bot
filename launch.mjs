@@ -773,6 +773,76 @@ function ensurePreset() {
   applyLoadConfigToAllModels();
 }
 
+// ── Sync system prompt into LM Studio conversations ──────────────────────────
+// LM Studio stores systemPrompt per-conversation (not in presets).
+// This function writes the Carl Miller system prompt to the active conversation
+// and any recent conversations that still have an empty systemPrompt.
+function syncSystemPromptToLmStudio() {
+  const sysTxtPath = path.join(__dirname, 'SYSTEM_PROMPT.md');
+  let sysPromptText = '';
+  try {
+    const raw = readFileSync(sysTxtPath, 'utf8');
+    const sepIdx = raw.lastIndexOf('═══');
+    if (sepIdx !== -1) {
+      sysPromptText = raw.slice(raw.indexOf('\n', sepIdx) + 1).trim();
+    } else {
+      const lines = raw.split('\n');
+      const first = lines.findIndex(l => l.length > 0 && !l.startsWith('#'));
+      sysPromptText = lines.slice(first < 0 ? 0 : first).join('\n').trim();
+    }
+  } catch { return; /* no SYSTEM_PROMPT.md */ }
+  if (!sysPromptText) return;
+
+  const convDir  = path.join(HOME, '.lmstudio', 'conversations');
+  const cfgFile  = path.join(HOME, '.lmstudio', '.internal', 'conversation-config.json');
+  if (!existsSync(convDir)) return;
+
+  // Determine active conversation
+  let activeId = null;
+  try {
+    const cfg = JSON.parse(readFileSync(cfgFile, 'utf8'));
+    activeId = cfg.selectedConversation ?? null;
+  } catch { /* best-effort */ }
+
+  // Patch active conversation + any recent ones with blank system prompts
+  let patched = 0;
+  try {
+    const files = readdirSync(convDir).filter(f => f.endsWith('.conversation.json'));
+    // Sort newest first so we get the active one first
+    files.sort((a, b) => {
+      const ta = Number(a.replace('.conversation.json', '')) || 0;
+      const tb = Number(b.replace('.conversation.json', '')) || 0;
+      return tb - ta;
+    });
+    // Patch active conversation unconditionally; patch up to 20 recent blank ones
+    let blankCount = 0;
+    for (const fname of files) {
+      const isActive = fname === activeId;
+      if (!isActive && blankCount >= 20) continue;
+      const fpath = path.join(convDir, fname);
+      try {
+        const raw = readFileSync(fpath, 'utf8');
+        const conv = JSON.parse(raw);
+        if (!isActive && conv.systemPrompt && conv.systemPrompt.trim()) continue; // skip if already set
+        if (conv.systemPrompt === sysPromptText) continue; // already up to date
+        conv.systemPrompt = sysPromptText;
+        writeFileSync(fpath, JSON.stringify(conv, null, 2), 'utf8');
+        patched++;
+        if (!isActive) blankCount++;
+      } catch { /* skip unreadable files */ }
+    }
+  } catch (e) {
+    console.log(`${c.yellow}[sysprompt]${c.reset} Could not scan conversations: ${e.message}`);
+    return;
+  }
+
+  if (patched > 0) {
+    console.log(`${c.green}[sysprompt]${c.reset} Carl Miller system prompt written to ${patched} LM Studio conversation(s).`);
+  } else {
+    console.log(`${c.green}[sysprompt]${c.reset} LM Studio conversations already up to date.`);
+  }
+}
+
 // ── Dependency check + npm install ───────────────────────────────────────────
 function ensureDeps() {
   try { execSync('npm --version', { stdio: 'ignore' }); }
@@ -897,6 +967,7 @@ if (LOAD_MODEL) {
 
 ensureDeps();
 ensurePreset();
+syncSystemPromptToLmStudio();
 
 console.log(`\n${c.bold}${c.cyan}Easy by zCHG.org${c.reset}`);
 console.log(`${c.gray}Node ${process.version}  ·  ${process.platform}/${process.arch}  ·  ${new Date().toISOString()}${c.reset}`);
