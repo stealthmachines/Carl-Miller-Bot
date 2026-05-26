@@ -45,6 +45,28 @@ const LLM2        = process.env.LLM2 || 'qwen3.5-9b@q3_k_xl:2';
 const STATE_DIR   = path.join(__dirname, 'wuwei-routing', 'state');
 const LEDGER_FILE = path.join(__dirname, 'erl-ledger.json');
 
+// ─── SYSTEM PROMPT ────────────────────────────────────────────────────────
+let _sysPrompt = null;
+function getSystemPrompt() {
+  if (_sysPrompt !== null) return _sysPrompt;
+  try {
+    const raw = fs.readFileSync(path.join(__dirname, 'SYSTEM_PROMPT.md'), 'utf8');
+    const sepIdx = raw.lastIndexOf('═══');
+    _sysPrompt = sepIdx !== -1
+      ? raw.slice(raw.indexOf('\n', sepIdx) + 1).trim()
+      : raw.split('\n').slice(raw.split('\n').findIndex(l => l.length > 0 && !l.startsWith('#'))).join('\n').trim();
+  } catch { _sysPrompt = ''; }
+  return _sysPrompt;
+}
+
+// Ensure messages array starts with the Carl Miller system prompt.
+// Skips injection if the caller already supplied a system message.
+function ensureSystemPrompt(messages) {
+  if (messages.length > 0 && messages[0].role === 'system') return messages; // already set
+  const sys = getSystemPrompt();
+  return sys ? [{ role: 'system', content: sys }, ...messages] : messages;
+}
+
 // ─── PHI ENGINE ───────────────────────────────────────────────────────────────
 //
 // The golden ratio φ = 1.618... creates a natural non-uniform distribution
@@ -257,7 +279,7 @@ const server = http.createServer((req, res) => {
       try { parsed = JSON.parse(rawBody); }
       catch { res.writeHead(400); res.end(JSON.stringify({ error: 'Invalid JSON body' })); return; }
 
-      const messages    = parsed.messages ?? [];
+      const messages    = ensureSystemPrompt(parsed.messages ?? []);
       const contentStr  = messages.map(m => m.content).join(' ');
       const phi         = phiHash(contentStr);
       const mode        = selectMode(phi);
