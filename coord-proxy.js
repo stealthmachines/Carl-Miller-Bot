@@ -251,6 +251,20 @@ const server = http.createServer((req, res) => {
 
   if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
 
+  // ── / and /chat — serve the browser chat UI ──────────────────────────────
+  if (req.method === 'GET' && (req.url === '/' || req.url === '/chat')) {
+    const chatFile = path.join(__dirname, 'chat.html');
+    try {
+      const html = fs.readFileSync(chatFile, 'utf8');
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      res.end(html);
+    } catch {
+      res.writeHead(404);
+      res.end('chat.html not found — run INSTALL.bat again.');
+    }
+    return;
+  }
+
   // ── /status ───────────────────────────────────────────────────────────────
   if (req.method === 'GET' && req.url === '/status') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -341,5 +355,6 @@ server.listen(PROXY_PORT, '127.0.0.1', () => {
   console.log(`  Modes     →  SOLO 61.8% | RELAY 23.6% | CHALLENGE 14.6%`);
   console.log(`  ERL       →  ${LEDGER_FILE}`);
   console.log(`  Status    →  http://127.0.0.1:${PROXY_PORT}/status`);
+  console.log(`  Chat UI   →  http://127.0.0.1:${PROXY_PORT}/`);
   console.log('════════════════════════════════════════════════════');
 });

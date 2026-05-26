@@ -1039,6 +1039,16 @@ startHealthWriter();
 
 console.log(`\n${c.bold}Stack running.${c.reset}  ${c.gray}Ctrl+C to stop all.${c.reset}\n`);
 
+// Auto-open browser to the chat UI
+{
+  const chatUrl = 'http://localhost:1233';
+  const opener  = process.platform === 'win32'  ? 'start'    :
+                  process.platform === 'darwin' ? 'open'     : 'xdg-open';
+  console.log(`${c.cyan}[chat]${c.reset} Opening ${c.bold}${chatUrl}${c.reset} ...`);
+  try { spawnSync(opener, [chatUrl], { shell: true, stdio: 'ignore' }); }
+  catch { console.log(`${c.yellow}[chat]${c.reset} Could not auto-open browser — visit ${chatUrl} manually.`); }
+}
+
 // Watch for new LM Studio conversations and immediately inject the system prompt
 // This fires whenever LM Studio creates a new chat (e.g. user clicks "New Chat")
 try {
